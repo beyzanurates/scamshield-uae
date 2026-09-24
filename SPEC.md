@@ -23,7 +23,7 @@ Auth, accounts, database, admin panel, payments, browser extension, WhatsApp int
 - shadcn Tooltip requires wrapping the app in `TooltipProvider` in `src/app/layout.tsx`.
 - One API route: `POST /api/analyze` (Node runtime), `multipart/form-data` with `image` (png/jpg/webp, ≤ 8 MB). Returns `AnalysisReport` JSON. Image bytes are processed in memory only — never written to disk.
 - No global state library. React state + `sessionStorage` for the last report so `/report` survives a refresh.
-- AI provider: <PROVIDER> API with image input. Env vars: `AI_API_KEY`, `AI_MODEL` (default `<MODEL_ID>`). If `AI_API_KEY` is missing, `/api/analyze` returns HTTP 503 `{ "error": "ai_unavailable" }` and the UI falls back as described in 6.2.
+- AI provider: OpenRouter — OpenAI-compatible Chat Completions at https://openrouter.ai/api/v1/chat/completions (Authorization: Bearer AI_API_KEY; image sent as image_url data URL). Env vars: `AI_API_KEY`, `AI_MODEL` (default `anthropic/claude-sonnet-5`), optional `AI_FALLBACK_MODEL` (if set and the primary model call fails, retry once with it before using demo fixtures). If `AI_API_KEY` is missing, `/api/analyze` returns HTTP 503 `{ "error": "ai_unavailable" }` and the UI falls back as described in 6.2.
 - Single run command: `npm run dev`.
 
 ## 4. Architecture — "AI extracts, code decides"
