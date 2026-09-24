@@ -1,7 +1,7 @@
 # ScamShield UAE — Hackathon MVP Spec (Security & Governance track, ~4h build)
 
 ## 0. How to work (read first)
-- Repo: <GITHUB_URL>. It is already scaffolded (Next.js 16 App Router + TypeScript + Tailwind v4 + shadcn/ui; `npm run dev` works). If the repo turns out to be empty, scaffold it with `npx create-next-app@latest` (TypeScript, Tailwind, ESLint, App Router, `src/` dir, npm) and `npx shadcn@latest init`, then continue.
+- Repo: https://github.com/beyzanurates/scamshield-uae. It is already scaffolded (Next.js 16 App Router + TypeScript + Tailwind v4 + shadcn/ui; `npm run dev` works). If the repo turns out to be empty, scaffold it with `npx create-next-app@latest` (TypeScript, Tailwind, ESLint, App Router, `src/` dir, npm) and `npx shadcn@latest init`, then continue.
 - Save this message verbatim as `SPEC.md` in the repo root and commit it before anything else (if it already exists, keep it as is).
 - Work on branch `devin/mvp`. Commit after each milestone (`M1: ...`), push, open ONE pull request after M1 and keep pushing to it.
 - This is a time-boxed hackathon build. Deliver milestones in order (M1 → M2 → M3 → M4). Each milestone must leave the app in a demoable state.
@@ -30,7 +30,7 @@ Auth, accounts, database, admin panel, payments, browser extension, WhatsApp int
 Three stages, strictly separated in code.
 
 ### 4.1 Extraction — `src/lib/extract.ts` (the only AI step)
-A verified, working example of calling the vision API with an image is in `scripts/test-vision.mjs` — reuse its request shape. Send the screenshot to the vision model with a system prompt that returns ONLY observable facts as strict JSON (temperature 0). Validate with zod (`src/lib/schemas.ts`); on invalid JSON retry once, then throw.
+A verified, working example of calling the vision API with an image is in `scripts/test-vision.mjs` — reuse its request shape. Send the screenshot to the vision model with a system prompt that returns ONLY observable facts as strict JSON (temperature 0). Strip markdown code fences (```json ... ```) from the model output before parsing. Validate with zod (`src/lib/schemas.ts`); on invalid JSON retry once, then throw.
 {
   "channel": "whatsapp|sms|email|social|unknown",
   "language": "en|ar|mixed|other",

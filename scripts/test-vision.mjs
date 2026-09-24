@@ -1,8 +1,9 @@
 // test-vision.mjs — checks that your API key + model ID accept an image and can read a screenshot.
 // Usage:
-//   AI_API_KEY=... node scripts/test-vision.mjs anthropic claude-sonnet-5 public/demo/demo-1.png
-//   AI_API_KEY=... node scripts/test-vision.mjs openai    <model-id>      public/demo/demo-1.png
-//   AI_API_KEY=... node scripts/test-vision.mjs gemini    gemini-3.5-flash public/demo/demo-1.png
+//   AI_API_KEY=... node scripts/test-vision.mjs openrouter anthropic/claude-sonnet-5 public/demo/demo-1.png
+//   AI_API_KEY=... node scripts/test-vision.mjs anthropic  claude-sonnet-5           public/demo/demo-1.png
+//   AI_API_KEY=... node scripts/test-vision.mjs openai     <model-id>                public/demo/demo-1.png
+//   AI_API_KEY=... node scripts/test-vision.mjs gemini     gemini-3.5-flash          public/demo/demo-1.png
 // Needs Node 18+ (built-in fetch). No dependencies.
 
 import { readFileSync } from "node:fs";
@@ -11,7 +12,7 @@ const [provider, model, file] = process.argv.slice(2);
 const key = process.env.AI_API_KEY;
 
 if (!provider || !model || !file || !key) {
-  console.error("Usage: AI_API_KEY=... node scripts/test-vision.mjs <anthropic|openai|gemini> <model-id> <image.png|jpg|webp>");
+  console.error("Usage: AI_API_KEY=... node scripts/test-vision.mjs <openrouter|anthropic|openai|gemini> <model-id> <image.png|jpg|webp>");
   process.exit(1);
 }
 
@@ -21,7 +22,33 @@ const prompt =
   'Read this screenshot of a message. Return ONLY JSON with this shape: ' +
   '{"claimed_sender": string|null, "message_text": string, "urls": string[], "phone_numbers": string[], "amounts": string[]}';
 
+const openaiStyleBody = {
+  model,
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: prompt },
+        { type: "image_url", image_url: { url: `data:${mime};base64,${data}` } },
+      ],
+    },
+  ],
+};
+const openaiStyleText = (j) => j.choices?.[0]?.message?.content;
+
 const requests = {
+  openrouter: {
+    url: "https://openrouter.ai/api/v1/chat/completions",
+    headers: { Authorization: `Bearer ${key}`, "content-type": "application/json", "X-Title": "ScamShield UAE" },
+    body: openaiStyleBody,
+    text: openaiStyleText,
+  },
+  openai: {
+    url: "https://api.openai.com/v1/chat/completions",
+    headers: { Authorization: `Bearer ${key}`, "content-type": "application/json" },
+    body: openaiStyleBody,
+    text: openaiStyleText,
+  },
   anthropic: {
     url: "https://api.anthropic.com/v1/messages",
     headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
@@ -40,23 +67,6 @@ const requests = {
     },
     text: (j) => j.content?.map((c) => c.text ?? "").join(""),
   },
-  openai: {
-    url: "https://api.openai.com/v1/chat/completions",
-    headers: { Authorization: `Bearer ${key}`, "content-type": "application/json" },
-    body: {
-      model,
-      messages: [
-        {
-          role: "user",
-          content: [
-            { type: "text", text: prompt },
-            { type: "image_url", image_url: { url: `data:${mime};base64,${data}` } },
-          ],
-        },
-      ],
-    },
-    text: (j) => j.choices?.[0]?.message?.content,
-  },
   gemini: {
     url: `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     headers: { "x-goog-api-key": key, "content-type": "application/json" },
@@ -66,7 +76,7 @@ const requests = {
 }[provider];
 
 if (!requests) {
-  console.error("provider must be one of: anthropic | openai | gemini");
+  console.error("provider must be one of: openrouter | anthropic | openai | gemini");
   process.exit(1);
 }
 
@@ -81,7 +91,7 @@ const ms = Date.now() - started;
 
 if (!res.ok) {
   console.error(`FAILED — HTTP ${res.status} after ${ms} ms\n`, JSON.stringify(json, null, 2));
-  console.error("\nHints: 401/403 = wrong key · 404/400 'model not found' = wrong model ID · 429 = rate limit or no credits");
+  console.error("\nHints: 401/403 = wrong key · 404/400 'model not found' = wrong model ID · 402/429 = no credits or rate limit");
   process.exit(1);
 }
 
