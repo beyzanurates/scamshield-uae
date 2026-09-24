@@ -102,7 +102,7 @@ Each fixture = `{ id, title, image, extraction (exact JSON the extractor would r
 - demo-2 "Bank OTP request" (WhatsApp, EN): claimed_sender "Emirates NBD"; asks to "verify your account within 24 hours" and "enter the OTP we sent you"; link enbd-secure-verify.com. Expected HIGH, score ≥ 80. Indicators: credentials_or_otp_request, domain_mismatch, urgency.
 - demo-3 "DEWA service notice" (SMS, EN): claimed_sender "DEWA"; informational notice about scheduled maintenance; no payment or credential request; link https://www.dewa.gov.ae. Expected LOW, score ≤ 10. Positive: domain_verified.
 - demo-4 (M4 only) "Parcel fee, Arabic" (SMS, AR): Emirates Post impersonation asking for a small delivery fee via a non-official link. Expected HIGH.
-The PNGs are in `public/demo/`. If any is missing, generate a simple placeholder (phone-style card rendering the message text) with a small Node script so the demo still works; I will replace them.
+The PNGs are in `public/demo/`; each fixture's `extraction` JSON must transcribe its PNG exactly (run `scripts/test-vision.mjs` on each PNG to get the text, then correct by hand if needed). If any is missing, generate a simple placeholder (phone-style card rendering the message text) with a small Node script so the demo still works; I will replace them.
 
 ## 8. Language rules (hard requirements)
 - Never use "scam", "fraudulent" or "fake" as a verdict. Use "risk indicators", "commonly associated with", "could not be verified", "does not match the verified official domain".
