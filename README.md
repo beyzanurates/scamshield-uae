@@ -88,8 +88,9 @@ screenshot ──▶ extract.ts (AI: observable facts only)
 ```
 
 The model is never asked for a score or a verdict — only for what is visible in the screenshot.
-Every indicator on the report carries a provenance chip saying whether it came from the registry
-(VERIFIED), from a rule (HEURISTIC) or from the model's reading of the text (AI INTERPRETATION).
+Every indicator on the report carries a provenance chip: **Verified** (checked against the
+registry), **Extracted** (read verbatim off the screenshot) or **AI interpretation** (the model's
+or a heuristic's reading of the text).
 
 Screenshots are held in memory for the duration of the request and are never written to disk or
 stored. There is no database and no account.

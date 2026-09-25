@@ -40,10 +40,12 @@ On the report, point at, in this order:
 
 - **LOW 0**, and the green positive row: the link matches DEWA's verified official domain.
 - The guidance changes with the outcome: *"This link matches the verified official domain…"* — no
-  false alarm, no "don't click" on a legitimate message.
+  false alarm, no "don't click" where there's nothing to flag.
+- Note the caveat on screen: a matching domain confirms where the link points, not who sent the
+  message. *"It still doesn't tell you it's genuine — and we say so."*
 
-> "That's the part most scam detectors get wrong: clearing a real message matters as much as
-> flagging a fake one."
+> "That's the part most scam detectors get wrong: reporting 'no indicators found' honestly matters
+> as much as flagging a fake one."
 
 ## 3 · Live paste — 25s
 

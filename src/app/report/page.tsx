@@ -210,7 +210,9 @@ export default function ReportPage() {
       )}
 
       <section className="rounded-2xl border border-border bg-card p-6">
-        <h2 className="text-lg font-semibold">Why we flagged this</h2>
+        <h2 className="text-lg font-semibold">
+          {report.indicators.length === 0 ? "What we checked" : "Why we flagged this"}
+        </h2>
         <div className="mt-2">
           {report.indicators.length === 0 && report.positives.length === 0 ? (
             <p className="py-4 text-sm text-muted-foreground">
