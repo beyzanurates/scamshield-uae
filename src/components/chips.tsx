@@ -1,4 +1,5 @@
 import { cn } from "cn";
+import { LEVEL_LABELS, PROVENANCE_LABELS, type Locale } from "@/lib/i18n";
 import type { Provenance, RiskLevel } from "@/lib/types";
 
 const chipBase =
@@ -34,20 +35,22 @@ export function Chip({
   return <span className={cn(chipBase, tones[tone], className)}>{children}</span>;
 }
 
-export function LevelChip({ level }: { level: RiskLevel }) {
-  return <span className={cn(chipBase, "px-3", LEVEL_STYLES[level])}>{level} RISK</span>;
+export function LevelChip({ level, locale = "en" }: { level: RiskLevel; locale?: Locale }) {
+  return (
+    <span className={cn(chipBase, "px-3", LEVEL_STYLES[level])}>{LEVEL_LABELS[locale][level]}</span>
+  );
 }
 
-const PROVENANCE_LABELS: Record<Provenance, string> = {
-  EXTRACTED: "Extracted",
-  VERIFIED: "Verified",
-  INTERPRETED: "AI interpretation",
-};
-
-export function ProvenanceChip({ provenance }: { provenance: Provenance }) {
+export function ProvenanceChip({
+  provenance,
+  locale = "en",
+}: {
+  provenance: Provenance;
+  locale?: Locale;
+}) {
   return (
     <span className={cn(chipBase, "border-border bg-surface-2 text-muted-foreground")}>
-      {PROVENANCE_LABELS[provenance]}
+      {PROVENANCE_LABELS[locale][provenance]}
     </span>
   );
 }

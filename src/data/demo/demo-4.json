@@ -1,0 +1,27 @@
+{
+  "id": "demo-4",
+  "title": "Parcel fee (Arabic)",
+  "description": "Arabic SMS claiming an unpaid delivery fee, with a 24-hour deadline and an unofficial payment link.",
+  "image": "/demo/demo-4.png",
+  "image_sha256": "8e6d531ad0dfab9fe25d6935c94cd14d9214fbe900a921da2921f0fdbd5f95ee",
+  "extraction": {
+    "channel": "sms",
+    "language": "ar",
+    "message_text": "بريد الإمارات: شحنتك قيد الانتظار بسبب رسوم توصيل غير مدفوعة (12 درهم). يرجى الدفع خلال 24 ساعة لتجنب إعادة الشحنة إلى المرسل:\nhttps://emiratespost-delivery-fee.com/pay",
+    "claimed_sender": "بريد الإمارات",
+    "sender_handle": "+44 7700 900789",
+    "urls": ["https://emiratespost-delivery-fee.com/pay"],
+    "phone_numbers": ["+44 7700 900789"],
+    "amounts": [{ "value": 12, "currency": "AED", "quote": "(12 درهم)" }],
+    "requests": [
+      { "type": "payment", "quote": "يرجى الدفع خلال 24 ساعة" },
+      { "type": "click_link", "quote": "https://emiratespost-delivery-fee.com/pay" }
+    ],
+    "pressure_cues": [
+      { "type": "urgency", "quote": "خلال 24 ساعة" },
+      { "type": "threat", "quote": "لتجنب إعادة الشحنة" }
+    ],
+    "extraction_confidence": 0.94
+  },
+  "expected": { "level": "HIGH", "min_score": 80 }
+}

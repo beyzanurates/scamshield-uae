@@ -140,8 +140,7 @@ export function verify(extraction: Extraction): Verification {
   });
 
   const senderChannelAnomaly =
-    (org?.type === "government" || org?.type === "bank") &&
-    isPersonalOrForeignNumber(extraction.sender_handle);
+    org !== null && isPersonalOrForeignNumber(extraction.sender_handle);
 
   const reportChannels: ReportChannel[] = [ECRIME];
   if (org?.report_url && org.report_url !== ECRIME.url) {

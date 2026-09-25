@@ -2,8 +2,9 @@ import { describe, expect, it } from "vitest";
 import { demoFixtures } from "@/data/demo";
 import { buildReport } from "@/lib/report";
 import { GUIDANCE, guidanceTone, level, score } from "@/lib/scoring";
-import { provenanceLine } from "@/lib/summary";
-import { domainMatches, normalizeDomain } from "@/lib/verify";
+import { guidanceText, indicatorText, provenanceLine, riskSummary } from "@/lib/i18n";
+import { buildReportSummary } from "@/lib/summary";
+import { domainMatches, findOrg, normalizeDomain } from "@/lib/verify";
 
 describe("normalizeDomain", () => {
   it("strips scheme, www, port, path, query and trailing dot", () => {
@@ -153,9 +154,55 @@ describe("analysis provenance", () => {
       model: "anthropic/claude-sonnet-5",
       latency_ms: 5297,
     });
-    expect(provenanceLine(live)).toBe("Analyzed live · anthropic/claude-sonnet-5 · 5.3 s");
-    expect(provenanceLine(buildReport(demoFixtures[2].extraction, "demo"))).toBe(
+    expect(provenanceLine("en", live)).toBe("Analyzed live · anthropic/claude-sonnet-5 · 5.3 s");
+    expect(provenanceLine("en", buildReport(demoFixtures[2].extraction, "demo"))).toBe(
       "Cached analysis (demo fixture)"
     );
+  });
+});
+
+describe("Arabic registry matching", () => {
+  it("matches an Arabic claimed sender, with or without diacritics", () => {
+    expect(findOrg("بريد الإمارات")?.id).toBe("emirates-post");
+    expect(findOrg("بَرِيد الأمارات")?.id).toBe("emirates-post");
+    expect(findOrg("شرطة دبي")?.id).toBe("dubai-police");
+    expect(findOrg("هيئة كهرباء ومياه دبي")?.id).toBe("dewa");
+    expect(findOrg("بنك الإمارات دبي الوطني")?.id).toBe("emirates-nbd");
+  });
+});
+
+describe("demo-4 (Arabic parcel fee)", () => {
+  const report = buildReport(demoFixtures[3].extraction, "demo");
+
+  it("runs the Arabic fixture through the same pipeline and flags the expected indicators", () => {
+    expect(report.risk.level).toBe("HIGH");
+    expect(report.verification.org_id).toBe("emirates-post");
+    expect(report.indicators.map((indicator) => indicator.id)).toEqual(
+      expect.arrayContaining([
+        "domain_mismatch",
+        "payment_request",
+        "urgency",
+        "threat",
+        "sender_channel_anomaly",
+        "impersonation_unverifiable",
+      ])
+    );
+  });
+
+  it("renders templated strings in Arabic while keeping evidence quotes verbatim", () => {
+    const mismatch = report.indicators.find((indicator) => indicator.id === "domain_mismatch");
+    expect(mismatch?.params?.official_domain).toBe(report.verification.official_domains[0]);
+    expect(indicatorText("ar", mismatch!)).toContain(report.verification.official_domains[0]);
+    expect(indicatorText("ar", mismatch!)).not.toBe(mismatch!.explanation);
+    expect(mismatch?.evidence).toBe("emiratespost-delivery-fee.com");
+
+    expect(riskSummary("ar", "HIGH")).not.toBe(riskSummary("en", "HIGH"));
+    expect(guidanceText("ar", guidanceTone(report)).actions).toHaveLength(3);
+
+    const arabicSummary = buildReportSummary(report, "ar");
+    expect(arabicSummary).toContain("https://ecrime.ae");
+    expect(arabicSummary).toContain("emiratespost-delivery-fee.com");
+    expect(arabicSummary).not.toContain("What should I do?");
+    expect(provenanceLine("ar", report)).toBe("تحليل مُخزَّن (نموذج تجريبي)");
   });
 });

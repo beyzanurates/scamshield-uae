@@ -100,6 +100,8 @@ export interface Indicator {
   evidence: string;
   explanation: string;
   provenance: Provenance;
+  /** Values interpolated into the explanation, so other locales can rebuild the same sentence. */
+  params?: { official_domain?: string; heuristic?: string; sender_channel?: string };
 }
 
 export type RiskLevel = "LOW" | "MEDIUM" | "HIGH";

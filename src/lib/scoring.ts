@@ -138,7 +138,12 @@ export function level(value: number): RiskLevel {
   return "LOW";
 }
 
-function indicator(id: string, evidence: string, explanation: string): Indicator {
+function indicator(
+  id: string,
+  evidence: string,
+  explanation: string,
+  params?: Indicator["params"]
+): Indicator {
   const config = INDICATOR_CONFIG[id];
   return {
     id,
@@ -147,6 +152,7 @@ function indicator(id: string, evidence: string, explanation: string): Indicator
     evidence,
     explanation,
     provenance: config.provenance,
+    ...(params ? { params } : {}),
   };
 }
 
@@ -166,7 +172,8 @@ export function buildIndicators(
       indicator(
         "domain_mismatch",
         mismatches[0].normalized,
-        `This link does not match the verified official domain ${official}.`
+        `This link does not match the verified official domain ${official}.`,
+        { official_domain: official }
       )
     );
   }
@@ -177,7 +184,8 @@ export function buildIndicators(
       indicator(
         "suspicious_link",
         suspicious.normalized,
-        `This link shows a risky pattern: ${HEURISTIC_TEXT[suspicious.reasons[0]]}.`
+        `This link shows a risky pattern: ${HEURISTIC_TEXT[suspicious.reasons[0]]}.`,
+        { heuristic: suspicious.reasons[0] }
       )
     );
   }
@@ -224,11 +232,16 @@ export function buildIndicators(
   }
 
   if (verification.sender_channel_anomaly && extraction.sender_handle) {
+    const officialChannel =
+      verification.org_type === "government" || verification.org_type === "bank";
     indicators.push(
       indicator(
         "sender_channel_anomaly",
         extraction.sender_handle,
-        "Official UAE government and bank messages usually come from registered sender IDs, not personal or international mobile numbers."
+        officialChannel
+          ? "Official UAE government and bank messages usually come from registered sender IDs, not personal or international mobile numbers."
+          : "Messages from organizations in the verified registry usually come from registered sender IDs, not personal or international mobile numbers.",
+        { sender_channel: officialChannel ? "official" : "registry" }
       )
     );
   }
