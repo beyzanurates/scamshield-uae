@@ -1,0 +1,27 @@
+{
+  "id": "demo-1",
+  "title": "Fake Dubai Police fine",
+  "description": "SMS demanding an immediate traffic fine payment through an unofficial link.",
+  "image": "/demo/demo-1.png",
+  "extraction": {
+    "channel": "sms",
+    "language": "en",
+    "message_text": "Dubai Police: Your traffic fine is pending. Pay AED 420 immediately to avoid additional penalties.\nPay here: https://dubai-police-fine-payment.com/pay",
+    "claimed_sender": "Dubai Police",
+    "sender_handle": "+44 7700 900123",
+    "urls": ["https://dubai-police-fine-payment.com/pay"],
+    "phone_numbers": ["+44 7700 900123"],
+    "amounts": [{ "value": 420, "currency": "AED", "quote": "Pay AED 420" }],
+    "requests": [
+      { "type": "payment", "quote": "Pay AED 420 immediately to avoid additional penalties." },
+      { "type": "click_link", "quote": "Pay here: https://dubai-police-fine-payment.com/pay" }
+    ],
+    "pressure_cues": [
+      { "type": "urgency", "quote": "Pay AED 420 immediately" },
+      { "type": "threat", "quote": "to avoid additional penalties" },
+      { "type": "authority", "quote": "Dubai Police" }
+    ],
+    "extraction_confidence": 0.96
+  },
+  "expected": { "level": "HIGH", "min_score": 88 }
+}
