@@ -29,3 +29,23 @@ Decisions taken during the build that were not fully specified in `SPEC.md`.
 - Dark navy tokens are applied by overriding the existing shadcn CSS variables in
   `src/app/globals.css` (plus `--risk-high|medium|low` and `--surface-2`), so the installed
   components inherit the palette instead of being re-themed one by one.
+
+## M2
+
+- The 25 s budget is split ~15 s for the primary model (including its one invalid-JSON retry) and
+  the remainder for `AI_FALLBACK_MODEL`. The client aborts at 26 s so the server budget always
+  resolves first.
+- The fixture cache keys on the SHA-256 of the uploaded bytes, committed as `image_sha256` in
+  `src/data/demo/*.json`. `scripts/hash-demo-images.mjs` re-checks the hashes against the PNGs.
+  An image copied through the clipboard is re-encoded, so its hash no longer matches the fixture.
+- Missing `AI_API_KEY` returns `503 {"error":"ai_unavailable"}` as SPEC §3 requires; the cached
+  fixture report of SPEC §6.2 is then produced client-side in `src/lib/analyze-client.ts`, which
+  hashes the same bytes and runs the fixture extraction through `buildReport(..., "fallback")`.
+- Provider errors and timeouts are handled server-side: the route returns the fallback report
+  directly when the hash matches, else `502 {"error":"analysis_failed"}` and the UI shows
+  Retry / Try demo.
+- Every request logs one line `[analyze] mode=… model=… ms=… hash_match=… fallback_model_used=…`;
+  `mode=unavailable` is used for the 503 path.
+- Live extraction is not byte-identical to the fixtures (the model labels the police message's
+  second cue `authority` rather than `threat`), so demo-1 scores 94 live and 95 cached. Both stay
+  HIGH and inside the SPEC §7 bounds.
