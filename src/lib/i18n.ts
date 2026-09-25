@@ -76,7 +76,7 @@ export const UI: Record<Locale, Record<string, string>> = {
     card_payment: "الدفع",
     card_urgency: "الاستعجال",
     amount_requested: "مطلوبة",
-    not_detected: "غير موجود",
+    not_detected: "لم يُرصد",
     chip_not_in_registry: "غير مُدرجة في السجل",
     chip_unverified: "غير مُوثَّق",
     chip_domain_mismatch: "عدم تطابق النطاق",
@@ -91,7 +91,7 @@ export const UI: Record<Locale, Record<string, string>> = {
     mismatch_official: "النطاق الرسمي الموثَّق:",
     mismatch_result: "النتيجة:",
     mismatch_result_value: "عدم تطابق النطاق",
-    indicators_title: "لماذا صنّفنا هذه الرسالة",
+    indicators_title: "أسباب التحذير",
     indicators_title_clean: "ما الذي فحصناه",
     indicators_empty: "لم يتم رصد أي مؤشرات خطر بناءً على المعلومات المتاحة.",
     verify_title: "تحقَّق بأمان",
@@ -198,13 +198,19 @@ const HEURISTIC_TEXT_AR: Record<string, string> = {
   url_shortener: "يستخدم الرابط خدمة اختصار تُخفي وجهته الحقيقية",
   raw_ip_host: "يشير الرابط إلى عنوان IP مباشر بدلًا من اسم نطاق",
   lookalike_domain: "يحاكي النطاق اسم جهة معروفة",
-  non_ae_government_host: "الرابط ليس على نطاق ae. رغم ادعائه الانتماء إلى جهة حكومية إماراتية",
+  non_ae_government_host:
+    "الرابط ليس على نطاق إماراتي (\u200E.ae\u200E) رغم ادعائه الانتماء إلى جهة حكومية إماراتية",
 };
+
+/** Isolates a domain, URL or other LTR token inside an Arabic sentence so punctuation stays put. */
+function ltr(value: string): string {
+  return `\u200E${value}\u200E`;
+}
 
 /** Arabic counterparts of the explanations built in scoring.ts, keyed by the same indicator ids. */
 const INDICATOR_TEXT_AR: Record<string, (indicator: Indicator) => string> = {
   domain_mismatch: (indicator) =>
-    `لا يتطابق هذا الرابط مع النطاق الرسمي الموثَّق ${indicator.params?.official_domain ?? ""}.`,
+    `لا يتطابق هذا الرابط مع النطاق الرسمي الموثَّق ${ltr(indicator.params?.official_domain ?? "")}.`,
   suspicious_link: (indicator) =>
     `يُظهر هذا الرابط نمطًا مريبًا: ${HEURISTIC_TEXT_AR[indicator.params?.heuristic ?? ""] ?? ""}.`,
   credentials_or_otp_request: () =>
@@ -244,7 +250,7 @@ export function indicatorText(locale: Locale, indicator: Indicator): string {
 export function registryStatusText(locale: Locale, verification: Verification): string {
   if (locale === "en") return verification.status_text;
   return verification.status === "VERIFIED_ORG_FOUND"
-    ? `${verification.claimed_org ?? ""} مُدرجة في سجل الجهات الموثَّقة.`
+    ? `${ltr(verification.claimed_org ?? "")} مُدرجة في سجل الجهات الموثَّقة.`
     : "تعذّر التحقق من هذه الجهة من المصادر المتاحة.";
 }
 
