@@ -1,0 +1,27 @@
+{
+  "id": "demo-2",
+  "title": "Bank OTP request",
+  "description": "WhatsApp message asking you to verify an account and hand over the OTP.",
+  "image": "/demo/demo-2.png",
+  "image_sha256": "71c7fd3e1e2c064ab264441898de7e21621c67599d12306e0d8390dc3ceefd83",
+  "extraction": {
+    "channel": "whatsapp",
+    "language": "en",
+    "message_text": "Dear Customer, unusual activity was detected on your Emirates NBD account. To avoid suspension, verify your account within 24 hours. Enter the OTP we sent you at: https://enbd-secure-verify.com/login",
+    "claimed_sender": "Emirates NBD",
+    "sender_handle": "+44 7700 900456",
+    "urls": ["https://enbd-secure-verify.com/login"],
+    "phone_numbers": ["+44 7700 900456"],
+    "amounts": [],
+    "requests": [
+      { "type": "credentials_otp", "quote": "Enter the OTP we sent you at: https://enbd-secure-verify.com/login" },
+      { "type": "click_link", "quote": "https://enbd-secure-verify.com/login" }
+    ],
+    "pressure_cues": [
+      { "type": "urgency", "quote": "verify your account within 24 hours" },
+      { "type": "threat", "quote": "To avoid suspension" }
+    ],
+    "extraction_confidence": 0.95
+  },
+  "expected": { "level": "HIGH", "min_score": 80 }
+}

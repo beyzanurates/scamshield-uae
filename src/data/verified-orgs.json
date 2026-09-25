@@ -1,0 +1,240 @@
+[
+  {
+    "id": "dubai-police",
+    "name": "Dubai Police",
+    "aliases": ["شرطة دبي", "Dubai Police Force", "DubaiPolice"],
+    "type": "government",
+    "official_domains": ["dubaipolice.gov.ae"],
+    "official_app": "Dubai Police app",
+    "report_url": "https://ecrime.ae",
+    "sources": ["https://www.dubaipolice.gov.ae"]
+  },
+  {
+    "id": "abu-dhabi-police",
+    "name": "Abu Dhabi Police",
+    "aliases": ["شرطة أبوظبي", "ADPolice", "Abu Dhabi Police GHQ"],
+    "type": "government",
+    "official_domains": ["adpolice.gov.ae"],
+    "official_app": "Abu Dhabi Police app",
+    "sources": ["https://www.adpolice.gov.ae"]
+  },
+  {
+    "id": "rta-dubai",
+    "name": "RTA Dubai",
+    "aliases": ["RTA", "هيئة الطرق والمواصلات", "Roads and Transport Authority"],
+    "type": "government",
+    "official_domains": ["rta.ae"],
+    "official_app": "RTA Dubai app",
+    "sources": ["https://www.rta.ae"]
+  },
+  {
+    "id": "salik",
+    "name": "Salik",
+    "aliases": ["سالك", "Salik Company"],
+    "type": "government",
+    "official_domains": ["salik.ae"],
+    "official_app": "Salik app",
+    "sources": ["https://www.salik.ae"]
+  },
+  {
+    "id": "dewa",
+    "name": "DEWA",
+    "aliases": ["هيئة كهرباء ومياه دبي", "Dubai Electricity and Water Authority", "Dubai Electricity & Water Authority"],
+    "type": "government",
+    "official_domains": ["dewa.gov.ae"],
+    "official_app": "DEWA app",
+    "sources": ["https://www.dewa.gov.ae"]
+  },
+  {
+    "id": "emirates-post",
+    "name": "Emirates Post",
+    "aliases": ["بريد الإمارات", "Emirates Post Group", "EmiratesPost"],
+    "type": "postal",
+    "official_domains": ["emiratespost.ae"],
+    "official_app": "Emirates Post app",
+    "sources": ["https://www.emiratespost.ae"]
+  },
+  {
+    "id": "etisalat",
+    "name": "e& (Etisalat)",
+    "aliases": ["Etisalat", "e&", "اتصالات", "etisalat by e&"],
+    "type": "telecom",
+    "official_domains": ["etisalat.ae", "eand.com"],
+    "official_app": "My Etisalat UAE app",
+    "sources": ["https://www.etisalat.ae"]
+  },
+  {
+    "id": "du",
+    "name": "du",
+    "aliases": ["du Telecom", "دو", "EITC"],
+    "type": "telecom",
+    "official_domains": ["du.ae"],
+    "official_app": "du app",
+    "sources": ["https://www.du.ae"]
+  },
+  {
+    "id": "federal-tax-authority",
+    "name": "Federal Tax Authority",
+    "aliases": ["FTA", "الهيئة الاتحادية للضرائب"],
+    "type": "government",
+    "official_domains": ["tax.gov.ae"],
+    "sources": ["https://tax.gov.ae"]
+  },
+  {
+    "id": "icp",
+    "name": "ICP",
+    "aliases": [
+      "Federal Authority for Identity, Citizenship, Customs and Port Security",
+      "الهيئة الاتحادية للهوية والجنسية",
+      "ICA"
+    ],
+    "type": "government",
+    "official_domains": ["icp.gov.ae"],
+    "official_app": "UAEICP app",
+    "sources": ["https://icp.gov.ae"]
+  },
+  {
+    "id": "mohre",
+    "name": "MOHRE",
+    "aliases": ["Ministry of Human Resources and Emiratisation", "وزارة الموارد البشرية والتوطين"],
+    "type": "government",
+    "official_domains": ["mohre.gov.ae"],
+    "official_app": "MOHRE app",
+    "sources": ["https://www.mohre.gov.ae"]
+  },
+  {
+    "id": "uae-pass",
+    "name": "UAE PASS",
+    "aliases": ["UAEPASS", "الهوية الرقمية", "UAE Pass"],
+    "type": "government",
+    "official_domains": ["uaepass.ae"],
+    "official_app": "UAE PASS app",
+    "sources": ["https://uaepass.ae"]
+  },
+  {
+    "id": "uae-government-portal",
+    "name": "UAE Government portal",
+    "aliases": ["u.ae", "UAE Government", "الحكومة الرقمية لدولة الإمارات"],
+    "type": "government",
+    "official_domains": ["u.ae"],
+    "sources": ["https://u.ae"]
+  },
+  {
+    "id": "tdra",
+    "name": "TDRA",
+    "aliases": [
+      "Telecommunications and Digital Government Regulatory Authority",
+      "هيئة تنظيم الاتصالات والحكومة الرقمية"
+    ],
+    "type": "government",
+    "official_domains": ["tdra.gov.ae"],
+    "sources": ["https://tdra.gov.ae"]
+  },
+  {
+    "id": "central-bank-uae",
+    "name": "Central Bank of the UAE",
+    "aliases": ["CBUAE", "مصرف الإمارات المركزي", "Central Bank UAE"],
+    "type": "bank",
+    "official_domains": ["centralbank.ae"],
+    "sources": ["https://www.centralbank.ae"]
+  },
+  {
+    "id": "emirates-nbd",
+    "name": "Emirates NBD",
+    "aliases": ["EmiratesNBD", "بنك الإمارات دبي الوطني", "ENBD"],
+    "type": "bank",
+    "official_domains": ["emiratesnbd.com"],
+    "official_app": "Emirates NBD app",
+    "sources": ["https://www.emiratesnbd.com"]
+  },
+  {
+    "id": "fab",
+    "name": "FAB",
+    "aliases": ["First Abu Dhabi Bank", "بنك أبوظبي الأول"],
+    "type": "bank",
+    "official_domains": ["bankfab.com"],
+    "official_app": "FAB Mobile app",
+    "sources": ["https://www.bankfab.com"]
+  },
+  {
+    "id": "adcb",
+    "name": "ADCB",
+    "aliases": ["Abu Dhabi Commercial Bank", "بنك أبوظبي التجاري"],
+    "type": "bank",
+    "official_domains": ["adcb.com"],
+    "official_app": "ADCB Hayyak app",
+    "sources": ["https://www.adcb.com"]
+  },
+  {
+    "id": "mashreq",
+    "name": "Mashreq",
+    "aliases": ["Mashreq Bank", "بنك المشرق", "Mashreq Neo"],
+    "type": "bank",
+    "official_domains": ["mashreq.com"],
+    "official_app": "Mashreq Mobile app",
+    "sources": ["https://www.mashreq.com"]
+  },
+  {
+    "id": "dib",
+    "name": "Dubai Islamic Bank",
+    "aliases": ["DIB", "بنك دبي الإسلامي"],
+    "type": "bank",
+    "official_domains": ["dib.ae"],
+    "official_app": "DIB app",
+    "sources": ["https://www.dib.ae"]
+  },
+  {
+    "id": "rakbank",
+    "name": "RAKBANK",
+    "aliases": ["National Bank of Ras Al Khaimah", "بنك رأس الخيمة الوطني", "RAK Bank"],
+    "type": "bank",
+    "official_domains": ["rakbank.ae"],
+    "official_app": "RAKBANK Mobile app",
+    "sources": ["https://www.rakbank.ae"]
+  },
+  {
+    "id": "emirates",
+    "name": "Emirates",
+    "aliases": ["Emirates Airline", "طيران الإمارات", "Emirates Airlines"],
+    "type": "airline",
+    "official_domains": ["emirates.com"],
+    "official_app": "Emirates app",
+    "sources": ["https://www.emirates.com"]
+  },
+  {
+    "id": "etihad",
+    "name": "Etihad",
+    "aliases": ["Etihad Airways", "الاتحاد للطيران"],
+    "type": "airline",
+    "official_domains": ["etihad.com"],
+    "official_app": "Etihad Airways app",
+    "sources": ["https://www.etihad.com"]
+  },
+  {
+    "id": "aramex",
+    "name": "Aramex",
+    "aliases": ["أرامكس", "Aramex Delivery"],
+    "type": "postal",
+    "official_domains": ["aramex.com"],
+    "official_app": "Aramex app",
+    "sources": ["https://www.aramex.com"]
+  },
+  {
+    "id": "noon",
+    "name": "noon",
+    "aliases": ["noon.com", "نون"],
+    "type": "commerce",
+    "official_domains": ["noon.com"],
+    "official_app": "noon app",
+    "sources": ["https://www.noon.com"]
+  },
+  {
+    "id": "careem",
+    "name": "Careem",
+    "aliases": ["كريم", "Careem Networks"],
+    "type": "commerce",
+    "official_domains": ["careem.com"],
+    "official_app": "Careem app",
+    "sources": ["https://www.careem.com"]
+  }
+]
