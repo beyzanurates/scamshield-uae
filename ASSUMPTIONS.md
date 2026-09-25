@@ -72,3 +72,27 @@ Decisions taken during the build that were not fully specified in `SPEC.md`.
   colour: an amber chip next to a green LOW score read as a contradiction.
 - The 26 verified organizations are still the ones authored in M1 from SPEC §5, since the file the
   brief referred to was never in the repo.
+
+## M4 — English/Arabic
+
+- Translation is a lookup, never a model call. `src/lib/i18n.ts` holds both locales' templated
+  strings keyed by the ids the engine already produces (indicator id, guidance tone, risk level,
+  chip, section title), so the Arabic report is as deterministic as the English one.
+- English explanations stay on the indicator itself, as built by `scoring.ts`; Arabic is rebuilt
+  from the same id. Values interpolated into a sentence (the official domain, the link heuristic,
+  which sender-channel wording applies) travel in a new optional `Indicator.params` so the Arabic
+  sentence can be assembled from the same facts rather than parsed out of the English one.
+- Evidence quotes are never translated — they are what the screenshot said.
+- The locale lives in `useState` on `/report` and defaults to English; there is no persistence, no
+  URL parameter and no `lang` negotiation. `dir="rtl"` is set on the report container only.
+  Domains, the score denominator and the provenance line are forced LTR, and indicator evidence
+  uses `dir="auto"` so a phone number reads left-to-right while an Arabic quote stays RTL.
+- `sender_channel_anomaly` now fires for any organization in the registry, not only government and
+  bank entries — Emirates Post is typed `postal`, and the demo-4 message is exactly the case the
+  indicator exists for. Government and bank reports keep the M3 wording; other registry
+  organizations get a "verified registry" variant of the same sentence. Weight is unchanged.
+- The registry already carried the ten Arabic aliases requested in M4 (they were authored in M1),
+  and `foldText()` in `verify.ts` already strips harakat and normalizes أ/إ/آ and ة, so Arabic
+  matching is diacritics-insensitive without further changes.
+- Severity labels, registry status values (`MISMATCH`) and indicator ids stay English in the copied
+  summary: they are identifiers someone pastes into a report or a ticket, not prose.

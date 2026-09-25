@@ -95,5 +95,15 @@ or a heuristic's reading of the text).
 Screenshots are held in memory for the duration of the request and are never written to disk or
 stored. There is no database and no account.
 
+## English / Arabic
+
+`/report` has an EN · العربية toggle. Both locales are static template tables in
+`src/lib/i18n.ts`, keyed by the ids the engine produces (indicator id, guidance tone, risk level,
+chip, section title) — nothing on the report is translated by the model at runtime, and the
+score, the indicators and the registry result are identical in both languages. Evidence quotes are
+shown in the language of the original message. Arabic renders the report container `dir="rtl"`
+while domains, numbers and the provenance line stay left-to-right. Adding a locale means adding a
+column to the tables in `i18n.ts`, not touching `verify.ts` or `scoring.ts`.
+
 See [SPEC.md](SPEC.md) for the full product spec, [ASSUMPTIONS.md](ASSUMPTIONS.md) for the
 decisions taken while building, and [DEMO_SCRIPT.md](DEMO_SCRIPT.md) for the 90-second demo.

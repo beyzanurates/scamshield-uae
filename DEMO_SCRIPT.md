@@ -73,3 +73,19 @@ plus a mismatched domain.
 If the provider is down while uploading one of the three demo screenshots as a file, the app shows
 "AI service unavailable — showing cached analysis" and still produces the full report — that
 banner is a feature, not a failure. Say so.
+
+---
+
+## Optional 4th scenario — Arabic (adds ~20s)
+
+**Try demo → "Parcel fee (Arabic)"**: an Arabic SMS claiming to be بريد الإمارات, from a UK mobile,
+with a 24-hour deadline and `emiratespost-delivery-fee.com`. Cached result HIGH 95; live extraction
+of the same screenshot returned HIGH 94.
+
+> "Same engine, Arabic message. The registry matched بريد الإمارات to Emirates Post, and the link
+> still doesn't match emiratespost.ae."
+
+Then hit **العربية** in the top right.
+
+> "The whole report flips — right-to-left, Arabic wording. The quotes stay exactly as they appeared
+> in the message, and the translation is a lookup table, not the model."
