@@ -38,7 +38,7 @@ export default function Home() {
     <main className="mx-auto w-full max-w-[1040px] flex-1 px-6 py-16">
       {analyzing && <AnalyzingOverlay />}
 
-      <div className="relative">
+      <div className="relative overflow-x-clip">
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-[-120px] h-[320px] w-[620px] -translate-x-1/2 rounded-full bg-primary/10 blur-3xl"
