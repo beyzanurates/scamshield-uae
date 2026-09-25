@@ -79,6 +79,7 @@ function IndicatorRow({
     <div className="flex flex-col gap-2 border-b border-border py-4 last:border-b-0 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
       <div className="min-w-0">
         <p
+          dir="auto"
           className={`break-words text-sm font-medium ${positive ? "text-risk-low" : "text-foreground"}`}
         >
           “{indicator.evidence}”
