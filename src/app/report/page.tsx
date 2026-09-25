@@ -232,6 +232,7 @@ export default function ReportPage() {
               </div>
             </dl>
             <Button
+              nativeButton={false}
               render={
                 <a
                   href={`https://${officialDomain}`}
@@ -276,7 +277,7 @@ export default function ReportPage() {
           <ExternalLink className="size-4" />
         </a>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Button render={<Link href="/" />} className="h-11 px-5">
+          <Button nativeButton={false} render={<Link href="/" />} className="h-11 px-5">
             Scan another message
           </Button>
           <Button variant="outline" className="h-11 px-5" onClick={copySummary}>
