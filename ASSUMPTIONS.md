@@ -49,3 +49,26 @@ Decisions taken during the build that were not fully specified in `SPEC.md`.
 - Live extraction is not byte-identical to the fixtures (the model labels the police message's
   second cue `authority` rather than `threat`), so demo-1 scores 94 live and 95 cached. Both stay
   HIGH and inside the SPEC §7 bounds.
+
+## M3
+
+- Guidance copy is keyed on the outcome, not on a single constant. `GUIDANCE` in
+  `src/lib/scoring.ts` has four states and `guidanceTone()` picks one: `CAUTION` (MEDIUM/HIGH with
+  a link — the original copy), `CAUTION_NO_LINK` (MEDIUM/HIGH with no link at all), `LOW_VERIFIED`
+  (LOW with a `domain_verified` positive) and `LOW_NOTHING_TO_VERIFY` (LOW with no verified
+  domain). `CAUTION_NO_LINK` exists so that "Don't use the link in the message" / "Don't click the
+  link" can never appear on a report that contains no link; it keeps the cautious tone and swaps
+  the first action for "Don't reply to this message".
+- Both the Verify Safely headline and `recommended_actions` come from the same `GUIDANCE` entry, so
+  the panel, the action list and the copied summary cannot drift apart.
+- `sender_channel_anomaly` is now `provenance: "INTERPRETED"` — it is a heuristic about the shape
+  of the sender, not a registry lookup. Weight, category and severity are unchanged, so no score
+  moves.
+- `AnalysisReport.analysis` (`{ model, latency_ms }`) is optional and set only on the live path, by
+  the route, from the same numbers it logs. `provenanceLine()` in `src/lib/summary.ts` renders it as
+  `Analyzed live · <model> · <latency> s`, and anything without it (demo, fallback) as
+  `Cached analysis (demo fixture)`. It is used by both the `/report` footer and the copied summary.
+- The Sender card keeps the SPEC §6.3 "Unverified" label on a LOW report but drops the warning
+  colour: an amber chip next to a green LOW score read as a contradiction.
+- The 26 verified organizations are still the ones authored in M1 from SPEC §5, since the file the
+  brief referred to was never in the repo.
