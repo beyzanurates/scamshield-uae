@@ -85,14 +85,17 @@ export async function POST(request: Request) {
       fallbackModel,
       totalBudgetMs: TOTAL_BUDGET_MS,
     });
+    const ms = Date.now() - startedAt;
     log({
       mode: "live",
       model: result.model,
       fallback_model_used: result.usedFallbackModel,
-      ms: Date.now() - startedAt,
+      ms,
       hash_match: Boolean(fixture),
     });
-    return NextResponse.json(buildReport(result.extraction, "live"));
+    return NextResponse.json(
+      buildReport(result.extraction, "live", { model: result.model, latency_ms: ms })
+    );
   } catch (error) {
     const ms = Date.now() - startedAt;
     if (fixture) {

@@ -112,10 +112,17 @@ export interface Risk {
 
 export type AnalysisMode = "live" | "demo" | "fallback";
 
+/** Provenance of a live analysis, shown on the report so the demo audience can see it was real. */
+export interface AnalysisMeta {
+  model: string;
+  latency_ms: number;
+}
+
 export interface AnalysisReport {
   id: string;
   created_at: string;
   mode: AnalysisMode;
+  analysis?: AnalysisMeta;
   extraction: Extraction;
   verification: Verification;
   risk: Risk;

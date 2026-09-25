@@ -40,7 +40,7 @@ export const INDICATOR_CONFIG: Record<
     weight: 15,
     category: "SENDER",
     severity: "MEDIUM",
-    provenance: "VERIFIED",
+    provenance: "INTERPRETED",
   },
   reward_bait: { weight: 10, category: "URGENCY", severity: "LOW", provenance: "INTERPRETED" },
 };
@@ -51,11 +51,74 @@ export const SUMMARIES: Record<RiskLevel, string> = {
   LOW: "No major risk indicators detected from the information available.",
 };
 
-export const RECOMMENDED_ACTIONS = [
-  "Don't click the link",
-  "Don't send money or personal information",
-  "Verify directly through the official organization",
-];
+/**
+ * Guidance depends on the outcome: telling someone not to click a link they were never sent
+ * reads as a false alarm.
+ */
+export type GuidanceTone =
+  | "CAUTION"
+  | "CAUTION_NO_LINK"
+  | "LOW_VERIFIED"
+  | "LOW_NOTHING_TO_VERIFY";
+
+export const GUIDANCE: Record<
+  GuidanceTone,
+  { headline: string; footnote: string; actions: string[] }
+> = {
+  CAUTION: {
+    headline: "Don't use the link in the message.",
+    footnote:
+      "Navigate directly to the organization's official website or app instead of using links contained in suspicious messages.",
+    actions: [
+      "Don't click the link",
+      "Don't send money or personal information",
+      "Verify directly through the official organization",
+    ],
+  },
+  CAUTION_NO_LINK: {
+    headline: "Verify this message directly with the organization.",
+    footnote:
+      "Navigate directly to the organization's official website or app instead of replying to a message you did not expect.",
+    actions: [
+      "Don't reply to this message",
+      "Don't send money or personal information",
+      "Verify directly through the official organization",
+    ],
+  },
+  LOW_VERIFIED: {
+    headline:
+      "This link matches the verified official domain. To be safe, navigate to the site or app directly rather than tapping the link.",
+    footnote:
+      "A matching domain confirms where the link points, not who sent the message.",
+    actions: [
+      "No major indicators detected",
+      "Verify through the official app if in doubt",
+      "Report if something still feels wrong",
+    ],
+  },
+  LOW_NOTHING_TO_VERIFY: {
+    headline: "Nothing to verify in this message.",
+    footnote:
+      "Contact the organization through its official app or website if you want to confirm this message.",
+    actions: [
+      "No major indicators detected",
+      "If in doubt, contact the organization through its official app or website",
+      "Report if something still feels wrong",
+    ],
+  },
+};
+
+export function guidanceTone(report: {
+  risk: { level: RiskLevel };
+  verification: Pick<Verification, "domain_checks">;
+  positives: Indicator[];
+}): GuidanceTone {
+  const hasLink = report.verification.domain_checks.length > 0;
+  if (report.risk.level !== "LOW") return hasLink ? "CAUTION" : "CAUTION_NO_LINK";
+  return report.positives.some((positive) => positive.id === "domain_verified")
+    ? "LOW_VERIFIED"
+    : "LOW_NOTHING_TO_VERIFY";
+}
 
 const HEURISTIC_TEXT: Record<string, string> = {
   url_shortener: "the link uses a URL shortener that hides its real destination",
@@ -165,7 +228,7 @@ export function buildIndicators(
       indicator(
         "sender_channel_anomaly",
         extraction.sender_handle,
-        "This sender number is not the kind of channel the claimed organization uses for official messages."
+        "Official UAE government and bank messages usually come from registered sender IDs, not personal or international mobile numbers."
       )
     );
   }
@@ -211,6 +274,7 @@ export function analyze(
   );
   const value = score(totalWeight);
   const riskLevel = level(value);
+  const risk = { score: value, level: riskLevel, summary: SUMMARIES[riskLevel] };
 
   return {
     id,
@@ -218,9 +282,9 @@ export function analyze(
     mode,
     extraction,
     verification,
-    risk: { score: value, level: riskLevel, summary: SUMMARIES[riskLevel] },
+    risk,
     indicators,
     positives,
-    recommended_actions: RECOMMENDED_ACTIONS,
+    recommended_actions: GUIDANCE[guidanceTone({ risk, verification, positives })].actions,
   };
 }

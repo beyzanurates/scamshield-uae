@@ -7,7 +7,8 @@ import { useState, useSyncExternalStore } from "react";
 import { Chip, LevelChip, ProvenanceChip } from "@/components/chips";
 import { ScoreRing } from "@/components/score-ring";
 import { Button } from "@/components/ui/button";
-import { buildReportSummary } from "@/lib/summary";
+import { GUIDANCE, guidanceTone } from "@/lib/scoring";
+import { buildReportSummary, provenanceLine } from "@/lib/summary";
 import type { Indicator } from "@/lib/types";
 import { ECRIME, ORG_NOT_IN_REGISTRY_TEXT } from "@/lib/verify";
 import {
@@ -114,6 +115,7 @@ export default function ReportPage() {
     (cue) => cue.type === "urgency" || cue.type === "threat"
   );
   const officialDomain = verification.official_domains[0] ?? null;
+  const guidance = GUIDANCE[guidanceTone(report)];
 
   async function copySummary() {
     if (!report) return;
@@ -134,9 +136,7 @@ export default function ReportPage() {
         <div className="space-y-3">
           <LevelChip level={risk.level} />
           <p className="text-lg font-semibold">{risk.summary}</p>
-          <p className="text-sm text-muted-foreground">
-            Analysis mode: {report.mode} · Channel: {extraction.channel}
-          </p>
+          <p className="text-sm text-muted-foreground">Channel: {extraction.channel}</p>
         </div>
       </header>
 
@@ -144,7 +144,15 @@ export default function ReportPage() {
         <EvidenceCard
           title="Sender"
           value={extraction.claimed_sender}
-          chip={orgFound ? <Chip tone="warning">Unverified</Chip> : <Chip>Not in registry</Chip>}
+          chip={
+            !orgFound ? (
+              <Chip>Not in registry</Chip>
+            ) : risk.level === "LOW" ? (
+              <Chip>Unverified</Chip>
+            ) : (
+              <Chip tone="warning">Unverified</Chip>
+            )
+          }
         />
         <EvidenceCard
           title="Link"
@@ -223,7 +231,7 @@ export default function ReportPage() {
 
       <section className="rounded-2xl border border-border bg-card p-6">
         <h2 className="text-[11px] uppercase tracking-wide text-muted-foreground">Verify safely</h2>
-        <p className="mt-3 text-lg font-semibold">Don&apos;t use the link in the message.</p>
+        <p className="mt-3 text-lg font-semibold">{guidance.headline}</p>
         {orgFound && officialDomain ? (
           <>
             <dl className="mt-4 space-y-2 text-sm">
@@ -254,10 +262,7 @@ export default function ReportPage() {
         ) : (
           <p className="mt-4 text-sm text-muted-foreground">{ORG_NOT_IN_REGISTRY_TEXT}</p>
         )}
-        <p className="mt-5 text-sm text-muted-foreground">
-          Navigate directly to the organization&apos;s official website or app instead of using
-          links contained in suspicious messages.
-        </p>
+        <p className="mt-5 text-sm text-muted-foreground">{guidance.footnote}</p>
       </section>
 
       <section className="rounded-2xl border border-border bg-card p-6">
@@ -297,6 +302,7 @@ export default function ReportPage() {
           determination.
         </p>
         <p>Screenshots are analyzed in memory and are not stored.</p>
+        <p className="text-xs">{provenanceLine(report)}</p>
       </footer>
     </main>
   );
