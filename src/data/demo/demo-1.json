@@ -3,6 +3,7 @@
   "title": "Fake Dubai Police fine",
   "description": "SMS demanding an immediate traffic fine payment through an unofficial link.",
   "image": "/demo/demo-1.png",
+  "image_sha256": "39ede6dc1bc6c88df6ac50490fedc6acda0817d91f2c7f9e433e1008c4489643",
   "extraction": {
     "channel": "sms",
     "language": "en",

@@ -3,6 +3,7 @@
   "title": "DEWA service notice",
   "description": "SMS about scheduled maintenance, linking to the official DEWA domain.",
   "image": "/demo/demo-3.png",
+  "image_sha256": "24a81fe1afe6087de5ba06b034033cf30ad1985658dda1a93d7b028eb6c02b7d",
   "extraction": {
     "channel": "sms",
     "language": "en",

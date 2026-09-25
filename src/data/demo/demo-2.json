@@ -3,6 +3,7 @@
   "title": "Bank OTP request",
   "description": "WhatsApp message asking you to verify an account and hand over the OTP.",
   "image": "/demo/demo-2.png",
+  "image_sha256": "71c7fd3e1e2c064ab264441898de7e21621c67599d12306e0d8390dc3ceefd83",
   "extraction": {
     "channel": "whatsapp",
     "language": "en",

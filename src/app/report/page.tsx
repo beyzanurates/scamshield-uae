@@ -124,6 +124,11 @@ export default function ReportPage() {
 
   return (
     <main className="mx-auto w-full max-w-[1040px] flex-1 space-y-8 px-6 py-16">
+      {report.mode === "fallback" && (
+        <p className="rounded-2xl border border-border bg-surface-2 px-4 py-3 text-sm text-muted-foreground">
+          AI service unavailable — showing cached analysis
+        </p>
+      )}
       <header className="flex flex-col gap-6 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center">
         <ScoreRing score={risk.score} level={risk.level} />
         <div className="space-y-3">
